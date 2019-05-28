@@ -154,7 +154,7 @@ body {
 .todo-list li {
 	position: relative;
 	font-size: 24px;
-	border-bottom: 1px solid #ededed;
+	border-bottom: 1px solid #1BA19C40;
 }
 
 .todo-list li:last-child {
@@ -210,15 +210,15 @@ body {
 }
 
 .todo-list li label {
+	color: #1BA19C;
+	font-weight: 700;
 	word-break: break-all;
-	padding: 15px 15px 15px 60px;
+	padding: 20px 0 20px 60px;
 	display: block;
 	line-height: 1.2;
-	transition: color 0.4s;
 }
 
 .todo-list li.completed label {
-	color: #d9d9d9;
 	text-decoration: line-through;
 }
 
