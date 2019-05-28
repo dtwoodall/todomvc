@@ -13,25 +13,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var classNames = require("classnames");
 var React = require("react");
 var constants_1 = require("./constants");
-var utils_1 = require("./utils");
 var TodoFooter = (function (_super) {
     __extends(TodoFooter, _super);
     function TodoFooter() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     TodoFooter.prototype.render = function () {
-        var activeTodoWord = utils_1.Utils.pluralize(this.props.count, 'item');
-        var clearButton = null;
-        if (this.props.completedCount > 0) {
-            clearButton = (React.createElement("button", { className: "clear-completed", onClick: this.props.onClearCompleted }, "Clear completed"));
-        }
         var nowShowing = this.props.nowShowing;
         return (React.createElement("footer", { className: "footer" },
-            React.createElement("span", { className: "todo-count" },
-                React.createElement("strong", null, this.props.count),
-                " ",
-                activeTodoWord,
-                " left"),
             React.createElement("ul", { className: "filters" },
                 React.createElement("li", null,
                     React.createElement("a", { href: "#/", className: classNames({ selected: nowShowing === constants_1.ALL_TODOS }) }, "All")),
@@ -40,8 +29,7 @@ var TodoFooter = (function (_super) {
                     React.createElement("a", { href: "#/active", className: classNames({ selected: nowShowing === constants_1.ACTIVE_TODOS }) }, "Active")),
                 ' ',
                 React.createElement("li", null,
-                    React.createElement("a", { href: "#/completed", className: classNames({ selected: nowShowing === constants_1.COMPLETED_TODOS }) }, "Completed"))),
-            clearButton));
+                    React.createElement("a", { href: "#/completed", className: classNames({ selected: nowShowing === constants_1.COMPLETED_TODOS }) }, "Completed")))));
     };
     return TodoFooter;
 }(React.Component));

@@ -93,8 +93,7 @@ var TodoApp = (function (_super) {
         }, 0);
         var completedCount = todos.length - activeTodoCount;
         if (activeTodoCount || completedCount) {
-            footer =
-                React.createElement(footer_1.TodoFooter, { count: activeTodoCount, completedCount: completedCount, nowShowing: this.state.nowShowing, onClearCompleted: function (e) { return _this.clearCompleted(); } });
+            footer = React.createElement(footer_1.TodoFooter, { nowShowing: this.state.nowShowing });
         }
         if (todos.length) {
             main = (React.createElement("section", { className: "main" },

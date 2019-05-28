@@ -124,13 +124,7 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
     var completedCount = todos.length - activeTodoCount;
 
     if (activeTodoCount || completedCount) {
-      footer =
-        <TodoFooter
-          count={activeTodoCount}
-          completedCount={completedCount}
-          nowShowing={this.state.nowShowing}
-          onClearCompleted={ e=> this.clearCompleted() }
-        />;
+      footer = <TodoFooter nowShowing={this.state.nowShowing} />;
     }
 
     if (todos.length) {
