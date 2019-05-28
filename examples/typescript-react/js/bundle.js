@@ -104,7 +104,6 @@ var TodoApp = (function (_super) {
         }
         return (React.createElement("div", null,
             React.createElement("header", { className: "header" },
-                React.createElement("h1", null, "todos"),
                 React.createElement("input", { ref: "newField", className: "new-todo", placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true })),
             main,
             footer));
