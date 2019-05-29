@@ -98,13 +98,11 @@ var TodoApp = (function (_super) {
         }
         if (todos.length) {
             main = (React.createElement("section", { className: "main" },
-                React.createElement("input", { id: "toggle-all", className: "toggle-all", type: "checkbox", onChange: function (e) { return _this.toggleAll(e); }, checked: activeTodoCount === 0 }),
-                React.createElement("label", { htmlFor: "toggle-all" }, "Mark all as complete"),
-                React.createElement("ul", { className: "todo-list" }, todoItems)));
+                React.createElement("ul", { className: "todo-list" }, todoItems),
+                React.createElement("input", { ref: "newField", className: "new-todo", placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true })));
         }
         return (React.createElement("div", null,
-            React.createElement("header", { className: "header" },
-                React.createElement("input", { ref: "newField", className: "new-todo", placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true })),
+            React.createElement("header", { className: "header" }, "To do:"),
             main,
             footer));
     };

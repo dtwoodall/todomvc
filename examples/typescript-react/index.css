@@ -68,6 +68,14 @@ body {
 	color: #e6e6e6;
 }
 
+.header {
+    color: black;
+	font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
 .new-todo,
 .edit {
 	position: relative;
@@ -95,9 +103,7 @@ body {
 }
 
 .main {
-	position: relative;
-	z-index: 2;
-	border-top: 1px solid #e6e6e6;
+	margin-top: 20px;
 }
 
 .toggle-all {
