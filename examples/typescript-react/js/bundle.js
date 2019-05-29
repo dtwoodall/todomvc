@@ -155,6 +155,7 @@ var TodoFooter = (function (_super) {
     TodoFooter.prototype.render = function () {
         var nowShowing = this.props.nowShowing;
         return (React.createElement("footer", { className: "footer" },
+            React.createElement("h1", { className: "footer-title" }, "Show:"),
             React.createElement("ul", { className: "filters" },
                 React.createElement("li", null,
                     React.createElement("a", { href: "#/", className: classNames({ selected: nowShowing === constants_1.ALL_TODOS }) }, "All")),

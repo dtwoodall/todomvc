@@ -16,6 +16,7 @@ class TodoFooter extends React.Component<ITodoFooterProps, {}> {
     const nowShowing = this.props.nowShowing;
     return (
       <footer className="footer">
+        <h1 className="footer-title">Show:</h1>
         <ul className="filters">
           <li>
             <a
