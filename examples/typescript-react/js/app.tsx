@@ -21,8 +21,9 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
   constructor(props : IAppProps) {
     super(props);
     this.state = {
+      adding: false,
       nowShowing: ALL_TODOS,
-      editing: null
+      editing: null,
     };
   }
 
@@ -34,6 +35,10 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
       '/completed': setState.bind(this, {nowShowing: COMPLETED_TODOS})
     });
     router.init('/');
+  }
+
+  public addTodo() {
+    this.setState({adding: true});
   }
 
   public handleNewTodoKeyDown(event : React.KeyboardEvent) {
@@ -48,6 +53,7 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
     if (val) {
       this.props.model.addTodo(val);
       (ReactDOM.findDOMNode(this.refs["newField"]) as HTMLInputElement).value = '';
+      this.setState({adding: false});
     }
   }
 
@@ -113,6 +119,19 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
       );
     });
 
+    let todoInput = null;
+    if (this.state.adding) {
+      todoInput = (
+        <input
+          ref="newField"
+          className="new-todo"
+          placeholder="What needs to be done?"
+          onKeyDown={ e => this.handleNewTodoKeyDown(e) }
+          autoFocus={true}
+        />
+      );
+    }
+
     // Note: It's usually better to use immutable data structures since they're
     // easier to reason about and React works very well with them. That's why
     // we use map(), filter() and reduce() everywhere instead of mutating the
@@ -133,13 +152,13 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
           <ul className="todo-list">
             {todoItems}
           </ul>
-          <input
-            ref="newField"
-            className="new-todo"
-            placeholder="What needs to be done?"
-            onKeyDown={ e => this.handleNewTodoKeyDown(e) }
-            autoFocus={true}
-          />
+          {todoInput}
+          <button
+            className="add-todo"
+            onClick={ () => this.addTodo() }
+          >
+            + Add task
+          </button>
         </section>
       );
     }

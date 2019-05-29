@@ -21,8 +21,9 @@ var TodoApp = (function (_super) {
     function TodoApp(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
+            adding: false,
             nowShowing: constants_1.ALL_TODOS,
-            editing: null
+            editing: null,
         };
         return _this;
     }
@@ -35,6 +36,9 @@ var TodoApp = (function (_super) {
         });
         router.init('/');
     };
+    TodoApp.prototype.addTodo = function () {
+        this.setState({ adding: true });
+    };
     TodoApp.prototype.handleNewTodoKeyDown = function (event) {
         if (event.keyCode !== constants_1.ENTER_KEY) {
             return;
@@ -44,6 +48,7 @@ var TodoApp = (function (_super) {
         if (val) {
             this.props.model.addTodo(val);
             ReactDOM.findDOMNode(this.refs["newField"]).value = '';
+            this.setState({ adding: false });
         }
     };
     TodoApp.prototype.toggleAll = function (event) {
@@ -88,6 +93,10 @@ var TodoApp = (function (_super) {
         var todoItems = shownTodos.map(function (todo) {
             return (React.createElement(todoItem_1.TodoItem, { key: todo.id, todo: todo, onToggle: _this.toggle.bind(_this, todo), onDestroy: _this.destroy.bind(_this, todo), onEdit: _this.edit.bind(_this, todo), editing: _this.state.editing === todo.id, onSave: _this.save.bind(_this, todo), onCancel: function (e) { return _this.cancel(); } }));
         });
+        var todoInput = null;
+        if (this.state.adding) {
+            todoInput = (React.createElement("input", { ref: "newField", className: "new-todo", placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true }));
+        }
         var activeTodoCount = todos.reduce(function (accum, todo) {
             return todo.completed ? accum : accum + 1;
         }, 0);
@@ -98,7 +107,8 @@ var TodoApp = (function (_super) {
         if (todos.length) {
             main = (React.createElement("section", { className: "main" },
                 React.createElement("ul", { className: "todo-list" }, todoItems),
-                React.createElement("input", { ref: "newField", className: "new-todo", placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true })));
+                todoInput,
+                React.createElement("button", { className: "add-todo", onClick: function () { return _this.addTodo(); } }, "+ Add task")));
         }
         return (React.createElement("div", null,
             React.createElement("header", { className: "header" }, "To do:"),

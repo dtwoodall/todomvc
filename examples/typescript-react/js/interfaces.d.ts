@@ -43,6 +43,7 @@ interface IAppProps {
 }
 
 interface IAppState {
+  adding? : boolean;
   editing? : string;
-  nowShowing? : string
+  nowShowing? : string;
 }
