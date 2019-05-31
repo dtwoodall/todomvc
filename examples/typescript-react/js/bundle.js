@@ -22,8 +22,9 @@ var TodoApp = (function (_super) {
     function TodoApp(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
+            adding: false,
             nowShowing: constants_1.ALL_TODOS,
-            editing: null
+            editing: null,
         };
         return _this;
     }
@@ -36,6 +37,9 @@ var TodoApp = (function (_super) {
         });
         router.init('/');
     };
+    TodoApp.prototype.addTodo = function () {
+        this.setState({ adding: true });
+    };
     TodoApp.prototype.handleNewTodoKeyDown = function (event) {
         if (event.keyCode !== constants_1.ENTER_KEY) {
             return;
@@ -45,6 +49,7 @@ var TodoApp = (function (_super) {
         if (val) {
             this.props.model.addTodo(val);
             ReactDOM.findDOMNode(this.refs["newField"]).value = '';
+            this.setState({ adding: false });
         }
     };
     TodoApp.prototype.toggleAll = function (event) {
@@ -89,24 +94,25 @@ var TodoApp = (function (_super) {
         var todoItems = shownTodos.map(function (todo) {
             return (React.createElement(todoItem_1.TodoItem, { key: todo.id, todo: todo, onToggle: _this.toggle.bind(_this, todo), onDestroy: _this.destroy.bind(_this, todo), onEdit: _this.edit.bind(_this, todo), editing: _this.state.editing === todo.id, onSave: _this.save.bind(_this, todo), onCancel: function (e) { return _this.cancel(); } }));
         });
+        var todoInput = null;
+        if (this.state.adding) {
+            todoInput = (React.createElement("input", { ref: "newField", className: "new-todo", placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true }));
+        }
         var activeTodoCount = todos.reduce(function (accum, todo) {
             return todo.completed ? accum : accum + 1;
         }, 0);
         var completedCount = todos.length - activeTodoCount;
         if (activeTodoCount || completedCount) {
-            footer =
-                React.createElement(footer_1.TodoFooter, { count: activeTodoCount, completedCount: completedCount, nowShowing: this.state.nowShowing, onClearCompleted: function (e) { return _this.clearCompleted(); } });
+            footer = React.createElement(footer_1.TodoFooter, { nowShowing: this.state.nowShowing });
         }
         if (todos.length) {
             main = (React.createElement("section", { className: "main" },
-                React.createElement("input", { id: "toggle-all", className: "toggle-all", type: "checkbox", onChange: function (e) { return _this.toggleAll(e); }, checked: activeTodoCount === 0 }),
-                React.createElement("label", { htmlFor: "toggle-all" }, "Mark all as complete"),
-                React.createElement("ul", { className: "todo-list" }, todoItems)));
+                React.createElement("ul", { className: "todo-list" }, todoItems),
+                todoInput,
+                React.createElement("button", { className: "add-todo", onClick: function () { return _this.addTodo(); } }, "+ Add task")));
         }
         return (React.createElement("div", null,
-            React.createElement("header", { className: "header" },
-                React.createElement("h1", null, "todos"),
-                React.createElement("input", { ref: "newField", className: "new-todo", placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true })),
+            React.createElement("header", { className: "header" }, "To do:"),
             main,
             footer));
     };
@@ -149,25 +155,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var classNames = require("classnames");
 var React = require("react");
 var constants_1 = require("./constants");
-var utils_1 = require("./utils");
 var TodoFooter = (function (_super) {
     __extends(TodoFooter, _super);
     function TodoFooter() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     TodoFooter.prototype.render = function () {
-        var activeTodoWord = utils_1.Utils.pluralize(this.props.count, 'item');
-        var clearButton = null;
-        if (this.props.completedCount > 0) {
-            clearButton = (React.createElement("button", { className: "clear-completed", onClick: this.props.onClearCompleted }, "Clear completed"));
-        }
         var nowShowing = this.props.nowShowing;
         return (React.createElement("footer", { className: "footer" },
-            React.createElement("span", { className: "todo-count" },
-                React.createElement("strong", null, this.props.count),
-                " ",
-                activeTodoWord,
-                " left"),
+            React.createElement("h1", { className: "footer-title" }, "Show:"),
             React.createElement("ul", { className: "filters" },
                 React.createElement("li", null,
                     React.createElement("a", { href: "#/", className: classNames({ selected: nowShowing === constants_1.ALL_TODOS }) }, "All")),
@@ -176,14 +172,13 @@ var TodoFooter = (function (_super) {
                     React.createElement("a", { href: "#/active", className: classNames({ selected: nowShowing === constants_1.ACTIVE_TODOS }) }, "Active")),
                 ' ',
                 React.createElement("li", null,
-                    React.createElement("a", { href: "#/completed", className: classNames({ selected: nowShowing === constants_1.COMPLETED_TODOS }) }, "Completed"))),
-            clearButton));
+                    React.createElement("a", { href: "#/completed", className: classNames({ selected: nowShowing === constants_1.COMPLETED_TODOS }) }, "Completed")))));
     };
     return TodoFooter;
 }(React.Component));
 exports.TodoFooter = TodoFooter;
 
-},{"./constants":2,"./utils":6,"classnames":7,"react":17}],4:[function(require,module,exports){
+},{"./constants":2,"classnames":7,"react":17}],4:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||

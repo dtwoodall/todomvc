@@ -21,8 +21,9 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
   constructor(props : IAppProps) {
     super(props);
     this.state = {
+      adding: false,
       nowShowing: ALL_TODOS,
-      editing: null
+      editing: null,
     };
   }
 
@@ -34,6 +35,10 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
       '/completed': setState.bind(this, {nowShowing: COMPLETED_TODOS})
     });
     router.init('/');
+  }
+
+  public addTodo() {
+    this.setState({adding: true});
   }
 
   public handleNewTodoKeyDown(event : React.KeyboardEvent) {
@@ -48,6 +53,7 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
     if (val) {
       this.props.model.addTodo(val);
       (ReactDOM.findDOMNode(this.refs["newField"]) as HTMLInputElement).value = '';
+      this.setState({adding: false});
     }
   }
 
@@ -113,6 +119,19 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
       );
     });
 
+    let todoInput = null;
+    if (this.state.adding) {
+      todoInput = (
+        <input
+          ref="newField"
+          className="new-todo"
+          placeholder="What needs to be done?"
+          onKeyDown={ e => this.handleNewTodoKeyDown(e) }
+          autoFocus={true}
+        />
+      );
+    }
+
     // Note: It's usually better to use immutable data structures since they're
     // easier to reason about and React works very well with them. That's why
     // we use map(), filter() and reduce() everywhere instead of mutating the
@@ -124,33 +143,22 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
     var completedCount = todos.length - activeTodoCount;
 
     if (activeTodoCount || completedCount) {
-      footer =
-        <TodoFooter
-          count={activeTodoCount}
-          completedCount={completedCount}
-          nowShowing={this.state.nowShowing}
-          onClearCompleted={ e=> this.clearCompleted() }
-        />;
+      footer = <TodoFooter nowShowing={this.state.nowShowing} />;
     }
 
     if (todos.length) {
       main = (
         <section className="main">
-          <input
-            id="toggle-all"
-            className="toggle-all"
-            type="checkbox"
-            onChange={ e => this.toggleAll(e) }
-            checked={activeTodoCount === 0}
-          />
-          <label
-            htmlFor="toggle-all"
-          >
-            Mark all as complete
-          </label>
           <ul className="todo-list">
             {todoItems}
           </ul>
+          {todoInput}
+          <button
+            className="add-todo"
+            onClick={ () => this.addTodo() }
+          >
+            + Add task
+          </button>
         </section>
       );
     }
@@ -158,14 +166,7 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
     return (
       <div>
         <header className="header">
-          <h1>todos</h1>
-          <input
-            ref="newField"
-            className="new-todo"
-            placeholder="What needs to be done?"
-            onKeyDown={ e => this.handleNewTodoKeyDown(e) }
-            autoFocus={true}
-          />
+          To do:
         </header>
         {main}
         {footer}

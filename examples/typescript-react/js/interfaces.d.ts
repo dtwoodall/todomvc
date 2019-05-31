@@ -20,10 +20,7 @@ interface ITodoItemState {
 }
 
 interface ITodoFooterProps {
-  completedCount : number;
-  onClearCompleted : any;
   nowShowing : string;
-  count : number;
 }
 
 
@@ -46,6 +43,7 @@ interface IAppProps {
 }
 
 interface IAppState {
+  adding? : boolean;
   editing? : string;
-  nowShowing? : string
+  nowShowing? : string;
 }
